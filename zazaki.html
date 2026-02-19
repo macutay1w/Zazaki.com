@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zaza Dili, Tarihi ve Kültürü hakkında kapsamlı ansiklopedik web sitesi.">
+    <title>ZAZAKI | Tarih, Dil ve Kültür Ansiklopedisi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS DEĞİŞKENLERİ VE TEMEL AYARLAR --- */
+        :root {
+            --primary: #9d00ff; /* Parlak Neon Mor */
+            --secondary: #5800a0; /* Koyu Mor */
+            --accent: #00d4ff; /* Tamamlayıcı Neon Mavi */
+            --dark-bg: #050505; /* Derin Siyah */
+            --panel-bg: #0f0f13; /* Panel Rengi */
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --gold: #d4af37; /* Tarihsel vurgular için altın */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif;
+            color: #fff;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        /* --- HEADER & NAV --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 40px;
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul { display: flex; gap: 25px; }
+        nav ul li a {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            position: relative;
+        }
+        nav ul li a:hover, nav ul li a.active { color: var(--primary); }
+        nav ul li a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--primary); transition: 0.3s;
+        }
+        nav ul li a:hover::after { width: 100%; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #1a0529 0%, #000000 80%);
+            text-align: center;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mevlana_Museum_Konya.jpg/1200px-Mevlana_Museum_Konya.jpg') center/cover; /* Temsili tarihi doku */
+            opacity: 0.15;
+            filter: grayscale(100%);
+            z-index: 0;
+        }
+
+        .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(157, 0, 255, 0.6);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .btn-glow {
+            padding: 15px 40px;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-glow::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--primary); transition: 0.4s; z-index: -1;
+        }
+
+        .btn-glow:hover { color: #fff; box-shadow: 0 0 30px rgba(157, 0, 255, 0.4); }
+        .btn-glow:hover::before { left: 0; }
+
+        /* --- GENEL SECTION YAPISI --- */
+        section { padding: 100px 10%; border-bottom: 1px solid #1a1a1a; }
+        
+        .section-header { margin-bottom: 60px; border-left: 5px solid var(--primary); padding-left: 20px; }
+        .section-header h2 { font-size: 2.5rem; color: #fff; margin-bottom: 10px; }
+        .section-header p { color: var(--accent); font-family: 'Playfair Display', serif; font-style: italic; }
+
+        /* --- TARIHCE (DETAYLI) --- */
+        .history-timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .history-timeline::after {
+            content: ''; position: absolute; width: 4px; background-color: var(--secondary);
+            top: 0; bottom: 0; left: 50%; margin-left: -2px;
+        }
+
+        .container-box {
+            padding: 20px 30px; position: relative; background-color: var(--panel-bg);
+            width: 45%; border-radius: 6px; border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .container-box:hover { transform: scale(1.02); border-color: var(--primary); }
+        .left { left: 0; }
+        .right { left: 55%; }
+
+        .date-badge {
+            background: var(--primary); color: #fff; padding: 5px 10px;
+            border-radius: 4px; font-weight: bold; font-size: 0.8rem; margin-bottom: 10px; display: inline-block;
+        }
+
+        /* --- DIL BILIMI & DIALEKTLER --- */
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .lang-card {
+            background: linear-gradient(145deg, #121216, #0a0a0d);
+            padding: 40px; border-radius: 10px; border: 1px solid #222;
+        }
+        
+        .lang-card h3 { color: var(--gold); margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .lang-card ul li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+        .lang-card ul li::before { content: '▹'; color: var(--primary); position: absolute; left: 0; }
+
+        /* --- KÜLTÜR & GIYIM --- */
+        .culture-section { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+        .culture-text p { margin-bottom: 20px; text-align: justify; }
+        
+        .clothing-gallery {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
+        }
+        
+        .clothing-item {
+            background: #222; height: 200px; position: relative; overflow: hidden; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        .clothing-item span {
+            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8);
+            color: #fff; text-align: center; padding: 5px; font-size: 0.9rem;
+        }
+        
+        .clothing-item i { font-size: 3rem; color: #555; }
+
+        /* --- ÜNLÜLER --- */
+        .famous-grid {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;
+        }
+
+        .famous-card {
+            flex: 1 1 300px; max-width: 350px; background: var(--panel-bg);
+            border-top: 3px solid var(--primary); padding: 30px; text-align: center;
+            transition: 0.3s;
+        }
+
+        .famous-card:hover { background: #1a1a20; }
+        .famous-card h3 { font-size: 1.5rem; margin: 15px 0 5px; }
+        .famous-card .role { color: var(--accent); font-size: 0.9rem; letter-spacing: 1px; }
+        .famous-card p { font-size: 0.9rem; margin-top: 15px; color: #ccc; }
+
+        /* --- KAYNAKÇA --- */
+        .biblio-table {
+            width: 100%; border-collapse: collapse; background: var(--panel-bg);
+        }
+        .biblio-table th, .biblio-table td {
+            text-align: left; padding: 15px; border-bottom: 1px solid #333;
+        }
+        .biblio-table th { color: var(--primary); font-family: 'Cinzel'; }
+        .biblio-table tr:hover { background: #16161c; }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #000; padding: 50px; text-align: center; border-top: 1px solid #333;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .history-timeline::after { left: 31px; }
+            .container-box { width: 100%; padding-left: 70px; margin-bottom: 20px; }
+            .container-box.right { left: 0%; }
+            .left::before, .right::before { left: 60px; border: medium solid white; border-width: 10px 10px 10px 0; border-color: transparent white transparent transparent; }
+            .left::after, .right::after { left: 21px; }
+            .culture-section { grid-template-columns: 1fr; }
+            nav { display: none; } /* Basitlik için mobilde nav gizli */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">ZAZA<span>KI</span></div>
+        <nav>
+            <ul>
+                <li><a href="#home">Ana Sayfa</a></li>
+                <li><a href="#history">Tarih</a></li>
+                <li><a href="#language">Dilbilim</a></li>
+                <li><a href="#culture">Kültür</a></li>
+                <li><a href="#people">Ünlüler</a></li>
+                <li><a href="#sources">Kaynakça</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Zonê Ma Zazaki</h1>
+            <p>Mezopotamya'nın kayıp hazinesi değil, yaşayan en kadim mirası.</p>
+            <p style="font-size: 1rem; color: #ccc; max-width: 700px; margin: 0 auto 30px;">
+                Deylem dağlarından Fırat havzasına uzanan binlerce yıllık bir serüven. 
+                Hint-Avrupa dil ailesinin en özgün, en zengin gramer yapısına sahip dillerinden biri.
+            </p>
+            <a href="#history" class="btn-glow">Keşfetmeye Başla</a>
+        </div>
+    </section>
+
+    <section id="history">
+        <div class="section-header">
+            <h2>Köken ve Tarihçe</h2>
+            <p>"Deylem'den Anadolu'ya: Bir Halkın Göçü"</p>
+        </div>
+
+        <div class="history-timeline">
+            <div class="container-box left">
+                <div class="content">
+                    <span class="date-badge">M.Ö. ve Antik Dönem</span>
+                    <h3>Deylem (Daylam) Kökeni</h3>
+                    <p>Zazaların (Dimilî) kökeni, Hazar Denizi'nin güneybatısındaki Deylem bölgesine dayanır. Ünlü dilbilimci <strong>V. Minorsky</strong>, "Daylam" kelimesi ile "Dimilî" kelimesi arasındaki fonetik değişimi kanıtlamıştır. Deylemliler, savaşçı yetenekleriyle Sasani ordusunun bel kemiğini oluşturmuştur.</p>
+                </div>
+            </div>
+            <div class="container-box right">
+                <div class="content">
+                    <span class="date-badge">10. - 11. Yüzyıl</span>
+                    <h3>Büveyhioğulları Dönemi</h3>
+                    <p>Deylem kökenli hanedanlıklar, İslam coğrafyasında büyük güç kazanmıştır. Büveyhioğulları (Buyids), Bağdat'ta halifeyi kontrol altına alacak kadar güçlenmiş, bu dönemde Zaza atalarının batıya göç hareketleri hızlanmıştır.</p>
+                </div>
+            </div>
+            <div class="container-box left">
+                <div class="content">
+                    <span class="date-badge">1514 - 1700 (Osmanlı)</span>
+                    <h3>Osmanlı Kayıtları & Tahrir Defterleri</h3>
+                    <p>Çaldıran Savaşı sonrası Yavuz Sultan Selim döneminde bölge Osmanlı idaresine girmiştir. Osmanlı tahrir defterlerinde "Sancak-ı Zaza" ibarelerine rastlanır. <strong>Evliya Çelebi</strong>, Seyahatnamesi'nde Bingöl ve Palu bölgesini anlatırken, halkın dilinin "ne Arapça, ne Farsça ne de Kürtçe" olduğunu, kendine has "Zaza lisanı" olduğunu belirtir ve kelime örnekleri verir.</p>
+                </div>
+            </div>
+            <div class="container-box right">
+                <div class="content">
+                    <span class="date-badge">1932</span>
+                    <h3>Modern Dilbilimsel Keşif</h3>
+                    <p>Alman dilbilimci <strong>Oskar Mann</strong> ve öğrencisi <strong>Karl Hadank</strong>, "Mundarten der Zaza" (Zaza Lehçeleri) adlı eserle, Zazaca'nın bir Kürt lehçesi olmadığını, İran dilleri grubunda başlı başına bir dil olduğunu bilimsel olarak kanıtlamıştır.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="language">
+        <div class="section-header">
+            <h2>Zazaki Dili ve Yapısı</h2>
+            <p>İrani Dillerin Kuzeybatı Kolu: Zaza-Gorani Grubu</p>
+        </div>
+        
+        <div class="language-grid">
+            <div class="lang-card">
+                <h3><i class="fas fa-sitemap"></i> Sınıflandırma</h3>
+                <p>Zazaca, <strong>Hint-Avrupa</strong> dil ailesinin <strong>İrani</strong> kolunda yer alır. En yakın akrabaları Hazar Denizi kıyısındaki dillerdir:</p>
+                <ul>
+                    <li>Goranice (Hawrami)</li>
+                    <li>Talişçe</li>
+                    <li>Gilanice / Mazenderanca</li>
+                    <li>Sengserce</li>
+                </ul>
+                <p style="margin-top:10px; font-size:0.9rem; color:#888;">Not: Farsça ve Kürtçe ile akrabadır ancak gramatik yapı olarak onlardan ayrılır.</p>
+            </div>
+
+            <div class="lang-card">
+                <h3><i class="fas fa-spell-check"></i> Gramer Özellikleri</h3>
+                <ul>
+                    <li><strong>Ergativite:</strong> Geçmiş zamanda geçişli fiillerde özne, nesne durumuna düşer (Örneğin: "Ben suyu içtim" yerine "Su beni içti" mantığına benzer bir yapı).</li>
+                    <li><strong>Cinsiyet (Gender):</strong> Kelimeler eril (masculine) ve dişil (feminine) olarak ayrılır. Bu özellik komşu dillerin çoğunda kaybolmuştur.</li>
+                    <li><strong>İzafe Yapısı:</strong> Sıfat tamlamaları Farsça'daki gibi -e/-i ekleriyle değil, cinsiyete göre değişen eklerle yapılır.</li>
+                </ul>
+            </div>
+
+            <div class="lang-card">
+                <h3><i class="fas fa-comments"></i> Ana Lehçeler</h3>
+                <ul>
+                    <li><strong>Kuzey (Kırmancki):</strong> Tunceli (Dersim), Erzincan, Gümüşhane, Sivas, Erzurum. Alevi nüfusun yoğun olduğu lehçedir.</li>
+                    <li><strong>Merkez:</strong> Palu, Bingöl, Elazığ, Diyarbakır'ın kuzeyi. Şafi nüfusun yoğun olduğu standart lehçeye yakındır.</li>
+                    <li><strong>Güney (Dımıli):</strong> Siverek (Urfa), Çermik (Diyarbakır), Gerger (Adıyaman).</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="culture" style="background-color: #0b0b0f;">
+        <div class="section-header">
+            <h2>Kültür, Giyim ve Yaşam</h2>
+            <p>Coğrafyanın Şekillendirdiği Estetik</p>
+        </div>
+
+        <div class="culture-section">
+            <div class="culture-text">
+                <h3>Geleneksel Giyim</h3>
+                <p>Zaza kadınlarının giyimi bölgelere göre farklılık gösterir ancak renkler daima canlıdır. Dersim bölgesinde <strong>"Feqi"</strong> veya <strong>"Leçeg"</strong> (beyaz tülbent) kutsallık atfedilen bir simgedir. Baş bağlama şekilleri medeni hali belli eder.</p>
+                <p>Bingöl ve Palu çevresinde ise <strong>"Kofik"</strong> denilen, üzeri altın veya gümüş paralarla süslü başlıklar tarihte yaygındı. Elbiseler (fistan) genelde tek parça ve kat kat pilelidir. Bele "Şal" bağlanır.</p>
+                
+                <h3 style="margin-top:30px;">Halk İnanışları ve Bayramlar</h3>
+                <p><strong>Gağan (Gaxan):</strong> Aralık ayında kutlanan, eski yılı uğurlayıp yeni yılı karşılama bayramıdır. "Kalık" (ihtiyar adam) kılığına giren bir figür evleri dolaşır. Kökleri pagan dönemine kadar uzanır.</p>
+                <p><strong>Hızır (Xızır):</strong> Şubat ayında tutulan oruçlar ve yapılan "Qut" (kavut) tatlısı, Hızır inancının en güçlü olduğu ritüellerdir. Hızır, darda kalanların yardımcısıdır.</p>
+            </div>
+            
+            <div class="clothing-gallery">
+                <div class="clothing-item">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Şalvar & Yelek (Erkek)</span>
+                </div>
+                <div class="clothing-item" style="background:linear-gradient(45deg, #4b0082, #000)">
+                    <i class="fas fa-female"></i>
+                    <span>Üç Etek / Fistan (Kadın)</span>
+                </div>
+                <div class="clothing-item">
+                    <i class="fas fa-hat-cowboy-side"></i>
+                    <span>Puşi & Kofik (Başlıklar)</span>
+                </div>
+                <div class="clothing-item" style="background:linear-gradient(45deg, #4b0082, #000)">
+                    <i class="fas fa-drum"></i>
+                    <span>Erbane & Tembur</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="people">
+        <div class="section-header">
+            <h2>Tanınmış Şahsiyetler</h2>
+            <p>Edebiyat, Sanat ve Tarihe Yön Verenler</p>
+        </div>
+
+        <div class="famous-grid">
+            <div class="famous-card">
+                <h3>Seyid Rıza</h3>
+                <span class="role">1863 - 1937</span>
+                <p>Dersim bölgesinin en önemli kanaat önderi, aşiret reisi ve tarihsel figürüdür. 1937-38 olaylarının simge ismidir.</p>
+            </div>
+            <div class="famous-card">
+                <h3>Yılmaz Güney</h3>
+                <span class="role">Sinema Yönetmeni</span>
+                <p>Baba tarafından Siverekli Zaza (Desim aşireti) olan, Cannes ödüllü, "Çirkin Kral" lakaplı dünya çapında sinemacı.</p>
+            </div>
+            <div class="famous-card">
+                <h3>Ahmed-i Hasi</h3>
+                <span class="role">Şair / Yazar (1899)</span>
+                <p>İlk Zazaca Mevlid olan "Mewlidê Kırdî"yi 1899 yılında yazan din alimi ve şairdir. Zazaca'nın yazılı edebiyatının mihenk taşlarındandır.</p>
+            </div>
+            <div class="famous-card">
+                <h3>Ebubekir Pamukçu</h3>
+                <span class="role">Araştırmacı</span>
+                <p>Modern dönem Zaza yayıncılığını başlatan (Ayre, Piya dergileri), dilin standardize edilmesi için büyük emek veren eğitimci.</p>
+            </div>
+             <div class="famous-card">
+                <h3>Sezai Karakoç</h3>
+                <span class="role">Şair / Düşünür</span>
+                <p>Diyarbakır/Ergani doğumlu, Türk edebiyatının "Diriliş" şairi. Etnik köken olarak Zaza olduğu bilinmektedir (Maden ilçesi bağlantısı).</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="sources" style="padding-bottom: 50px;">
+        <div class="section-header">
+            <h2>Akademik ve Tarihi Kaynakça</h2>
+            <p>Bilginin Güvenilir Kökleri</p>
+        </div>
+
+        <div style="overflow-x:auto;">
+            <table class="biblio-table">
+                <thead>
+                    <tr>
+                        <th width="30%">Yazar / Eser Sahibi</th>
+                        <th width="50%">Eser Adı / Makale</th>
+                        <th width="20%">Yıl / Dönem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Oskar Mann & Karl Hadank</td>
+                        <td>Mundarten der Zaza (Zaza Lehçeleri) - Berlin</td>
+                        <td>1932</td>
+                    </tr>
+                    <tr>
+                        <td>Evliya Çelebi</td>
+                        <td>Seyahatname (Cilt 3 ve 4 - Bingöl/Palu Bahsi)</td>
+                        <td>17. Yüzyıl</td>
+                    </tr>
+                    <tr>
+                        <td>V. Minorsky</td>
+                        <td>Encyclopedia of Islam - "Daylam" Maddesi</td>
+                        <td>1960</td>
+                    </tr>
+                    <tr>
+                        <td>David N. Mackenzie</td>
+                        <td>The Role of the Kurdish Protecting Group (Dil Sınıflandırması)</td>
+                        <td>1961</td>
+                    </tr>
+                    <tr>
+                        <td>Terry Lynn Todd</td>
+                        <td>A Grammar of Dimili (Zazaca Grameri)</td>
+                        <td>1985</td>
+                    </tr>
+                    <tr>
+                        <td>Mesut Keskin</td>
+                        <td>Zazaca Üzerine Notlar (Makale)</td>
+                        <td>2010+</td>
+                    </tr>
+                    <tr>
+                        <td>Kâtip Çelebi</td>
+                        <td>Cihannüma (Bölge Coğrafyası)</td>
+                        <td>17. Yüzyıl</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        <div style="margin-bottom: 20px;">
+            <i class="fab fa-instagram" style="font-size: 1.5rem; margin: 0 10px; cursor: pointer; color:white;"></i>
+            <i class="fab fa-twitter" style="font-size: 1.5rem; margin: 0 10px; cursor: pointer; color:white;"></i>
+            <i class="fab fa-youtube" style="font-size: 1.5rem; margin: 0 10px; cursor: pointer; color:white;"></i>
+        </div>
+        <p>Copyright © 2024 Zazaki Language & History Project.</p>
+        <p style="font-size: 0.8rem; color: #555; margin-top: 10px;">Bu site eğitim ve kültür amaçlı hazırlanmıştır.</p>
+    </footer>
+
+</body>
+</html>
